@@ -21,6 +21,7 @@
 
 body {
     min-height: 100vh;
+    overflow-x: hidden;
     background:
         radial-gradient(circle at top left, rgba(137, 110, 58, 0.08), transparent 38%),
         radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 30%),
@@ -378,6 +379,8 @@ input[type="range"] {
     font-size: 0.96rem;
     line-height: 1.6;
     font-family: Consolas, "Courier New", monospace;
+    max-width: 100%;
+    word-break: break-word;
 }
 
 .tip-box {
@@ -490,5 +493,9 @@ input[type="range"] {
 
     .snippet-shell {
         min-height: 340px;
+    }
+
+    .code-snippet {
+        white-space: pre-wrap;
     }
 }
