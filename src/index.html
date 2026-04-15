@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-line">
+                    <h1>Sorting Visualizer</h1>
+                    <p>visualizador interativo de algoritmos</p>
+                </div>
+            </div>
+
+            <nav class="algorithm-nav" aria-label="Selecionar algoritmo">
+                <button class="nav-pill is-active" data-algorithm="bubble" type="button">Bubble Sort</button>
+                <button class="nav-pill" data-algorithm="insertion" type="button">Insertion Sort</button>
+                <button class="nav-pill" data-algorithm="selection" type="button">Selection Sort</button>
+            </nav>
+        </header>
+
+        <main class="dashboard">
+            <section class="left-column">
+                <section class="panel visualizer-panel">
+                    <div id="visualizer-container" class="visualizer-container" aria-live="polite"></div>
+
+                    <div class="legend" aria-label="Legenda das barras">
+                        <span class="legend-item"><i class="legend-swatch comparing"></i>comparando</span>
+                        <span class="legend-item"><i class="legend-swatch swapping"></i>trocando</span>
+                        <span class="legend-item"><i class="legend-swatch sorted"></i>ordenado</span>
+                        <span class="legend-item"><i class="legend-swatch default"></i>padrao</span>
+                    </div>
+                </section>
+
+                <section class="panel controls-panel">
+                    <div class="actions-row">
+                        <button id="start-btn" class="control-btn primary" type="button">Iniciar</button>
+                        <button id="reset-btn" class="control-btn" type="button">Reiniciar</button>
+                        <button id="random-btn" class="control-btn" type="button">Aleatorio</button>
+                    </div>
+
+                    <div class="range-row">
+                        <div class="range-group">
+                            <label for="speed-range">Velocidade</label>
+                            <input id="speed-range" type="range" min="1" max="10" value="5">
+                            <output id="speed-value" for="speed-range">5x</output>
+                        </div>
+
+                        <div class="range-group">
+                            <label for="size-range">Tamanho</label>
+                            <input id="size-range" type="range" min="8" max="24" value="12">
+                            <output id="size-value" for="size-range">12</output>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="stats-grid">
+                    <article class="panel stat-card">
+                        <p class="card-label">Comparacoes</p>
+                        <strong id="comparisons-count">0</strong>
+                    </article>
+
+                    <article class="panel stat-card">
+                        <p class="card-label">Trocas</p>
+                        <strong id="swaps-count">0</strong>
+                    </article>
+
+                    <article class="panel complexity-card">
+                        <p class="card-label">Complexidade - <span id="current-algorithm-label">Bubble Sort</span></p>
+                        <div class="complexity-values">
+                            <div>
+                                <span>Melhor:</span>
+                                <strong id="best-case">O(n)</strong>
+                            </div>
+                            <div>
+                                <span>Medio:</span>
+                                <strong id="average-case">O(n^2)</strong>
+                            </div>
+                            <div>
+                                <span>Pior:</span>
+                                <strong id="worst-case">O(n^2)</strong>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="scroll-cue" aria-hidden="true">v</div>
+            </section>
+
+            <aside class="panel code-panel">
+                <div class="language-tabs" aria-label="Selecionar linguagem">
+                    <button class="tab-btn is-active" data-language="javascript" type="button">JavaScript</button>
+                    <button class="tab-btn" data-language="python" type="button">Python</button>
+                    <button class="tab-btn" data-language="java" type="button">Java</button>
+                </div>
+
+                <div class="snippet-shell">
+                    <pre id="code-snippet" class="code-snippet"></pre>
+                </div>
+
+                <div class="tip-box">
+                    <p class="tip-title">dica pratica</p>
+                    <p id="algorithm-tip" class="tip-copy"></p>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
