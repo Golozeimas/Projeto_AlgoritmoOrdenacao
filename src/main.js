@@ -56,6 +56,146 @@ static void bubbleSort(int[] arr) {
   retornar lista`
         }
     },
+    cocktail: {
+        label: 'Cocktail Sort',
+        complexity: {
+            best: 'O(n)',
+            average: 'O(n^2)',
+            worst: 'O(n^2)'
+        },
+        tip: 'Cocktail Sort percorre a lista nos dois sentidos, empurrando os maiores para o fim e os menores para o início a cada ciclo.',
+        snippets: {
+            javascript: `// Cocktail Sort - JavaScript
+function cocktailSort(arr) {
+  const list = [...arr];
+  let start = 0;
+  let end = list.length - 1;
+  let swapped = true;
+
+  while (swapped) {
+    swapped = false;
+
+    for (let i = start; i < end; i++) {
+      if (list[i] > list[i + 1]) {
+        [list[i], list[i + 1]] = [list[i + 1], list[i]];
+        swapped = true;
+      }
+    }
+
+    if (!swapped) {
+      break;
+    }
+
+    swapped = false;
+    end--;
+
+    for (let i = end - 1; i >= start; i--) {
+      if (list[i] > list[i + 1]) {
+        [list[i], list[i + 1]] = [list[i + 1], list[i]];
+        swapped = true;
+      }
+    }
+
+    start++;
+  }
+
+  return list;
+}`,
+            python: `# Cocktail Sort - Python
+def cocktail_sort(arr):
+    values = arr[:]
+    start = 0
+    end = len(values) - 1
+    swapped = True
+
+    while swapped:
+        swapped = False
+
+        for i in range(start, end):
+            if values[i] > values[i + 1]:
+                values[i], values[i + 1] = values[i + 1], values[i]
+                swapped = True
+
+        if not swapped:
+            break
+
+        swapped = False
+        end -= 1
+
+        for i in range(end - 1, start - 1, -1):
+            if values[i] > values[i + 1]:
+                values[i], values[i + 1] = values[i + 1], values[i]
+                swapped = True
+
+        start += 1
+
+    return values`,
+            java: `// Cocktail Sort - Java
+static void cocktailSort(int[] arr) {
+    int start = 0;
+    int end = arr.length - 1;
+    boolean swapped = true;
+
+    while (swapped) {
+        swapped = false;
+
+        for (int i = start; i < end; i++) {
+            if (arr[i] > arr[i + 1]) {
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                swapped = true;
+            }
+        }
+
+        if (!swapped) {
+            break;
+        }
+
+        swapped = false;
+        end--;
+
+        for (int i = end - 1; i >= start; i--) {
+            if (arr[i] > arr[i + 1]) {
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                swapped = true;
+            }
+        }
+
+        start++;
+    }
+}`,
+            pseudocode: `COCKTAIL-SORT(lista)
+  inicio = 0
+  fim = tamanho(lista) - 1
+  trocou = verdadeiro
+
+  enquanto trocou
+    trocou = falso
+
+    para i de inicio ate fim - 1
+      se lista[i] > lista[i + 1]
+        trocar lista[i] com lista[i + 1]
+        trocou = verdadeiro
+
+    se nao trocou
+      retornar lista
+
+    trocou = falso
+    fim = fim - 1
+
+    para i de fim - 1 ate inicio
+      se lista[i] > lista[i + 1]
+        trocar lista[i] com lista[i + 1]
+        trocou = verdadeiro
+
+    inicio = inicio + 1
+
+  retornar lista`
+        }
+    },
     insertion: {
         label: 'Insertion Sort',
         complexity: {
