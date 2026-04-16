@@ -8,7 +8,7 @@ const ALGORITHM_META = {
             average: 'O(n^2)',
             worst: 'O(n^2)'
         },
-        tip: 'Bubble Sort e didatico, mas ineficiente para listas grandes. Use para demonstracoes, introducao a comparacoes e casos quase ordenados.',
+        tip: 'Bubble Sort é didático, mas ineficiente para listas grandes. Use para demonstrações, introdução a comparações e casos quase ordenados.',
         snippets: {
             javascript: `// Bubble Sort - JavaScript
 function bubbleSort(arr) {
@@ -63,7 +63,7 @@ static void bubbleSort(int[] arr) {
             average: 'O(n^2)',
             worst: 'O(n^2)'
         },
-        tip: 'Insertion Sort funciona muito bem em colecoes pequenas ou parcialmente ordenadas. Ele e simples, estavel e util como bloco de apoio em algoritmos hibridos.',
+        tip: 'Insertion Sort funciona muito bem em coleções pequenas ou parcialmente ordenadas. Ele é simples, estável e útil como bloco de apoio em algoritmos híbridos.',
         snippets: {
             javascript: `// Insertion Sort - JavaScript
 function insertionSort(arr) {
@@ -134,7 +134,7 @@ static void insertionSort(int[] arr) {
             average: 'O(n log n)',
             worst: 'O(n log n)'
         },
-        tip: 'Merge Sort divide o problema em partes menores e depois intercala os resultados. Ele e estavel e previsivel, mas usa memoria auxiliar.',
+        tip: 'Merge Sort divide o problema em partes menores e depois intercala os resultados. Ele é estável e previsível, mas usa memória auxiliar.',
         snippets: {
             javascript: `// Merge Sort - JavaScript
 function mergeSort(arr) {
@@ -253,7 +253,7 @@ INTERCALAR(esquerda, direita)
             average: 'O(n log n)',
             worst: 'O(n^2)'
         },
-        tip: 'Quick Sort costuma ser muito rapido na pratica. Ele particiona o array em torno de um pivo e funciona melhor quando a escolha do pivo evita particoes desequilibradas.',
+        tip: 'Quick Sort costuma ser muito rápido na prática. Ele particiona o array em torno de um pivô e funciona melhor quando a escolha do pivô evita partições desequilibradas.',
         snippets: {
             javascript: `// Quick Sort - JavaScript
 function quickSort(arr) {
@@ -370,7 +370,7 @@ PARTICIONAR(lista, inicio, fim)
             average: 'O(n^2)',
             worst: 'O(n^2)'
         },
-        tip: 'Selection Sort faz poucas trocas, mas muitas comparacoes. Ele ajuda a entender o conceito de selecionar o menor elemento restante a cada iteracao.',
+        tip: 'Selection Sort faz poucas trocas, mas muitas comparações. Ele ajuda a entender o conceito de selecionar o menor elemento restante a cada iteração.',
         snippets: {
             javascript: `// Selection Sort - JavaScript
 function selectionSort(arr) {
