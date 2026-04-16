@@ -33,6 +33,7 @@ desktop.ini
 .geminiignore
 .antigravityignore
 GEMINI.md
+AGENTS.md
 
 # ── Cobertura de testes ───────────────────────────────────
 coverage/

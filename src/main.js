@@ -46,6 +46,14 @@ static void bubbleSort(int[] arr) {
         }
     }
 }`
+            ,
+            pseudocode: `BUBBLE-SORT(lista)
+  para i de 0 ate tamanho(lista) - 2
+    para j de 0 ate tamanho(lista) - i - 2
+      se lista[j] > lista[j + 1]
+        trocar lista[j] com lista[j + 1]
+
+  retornar lista`
         }
     },
     insertion: {
@@ -104,6 +112,255 @@ static void insertionSort(int[] arr) {
         arr[j + 1] = current;
     }
 }`
+            ,
+            pseudocode: `INSERTION-SORT(lista)
+  para i de 1 ate tamanho(lista) - 1
+    atual = lista[i]
+    j = i - 1
+
+    enquanto j >= 0 e lista[j] > atual
+      lista[j + 1] = lista[j]
+      j = j - 1
+
+    lista[j + 1] = atual
+
+  retornar lista`
+        }
+    },
+    merge: {
+        label: 'Merge Sort',
+        complexity: {
+            best: 'O(n log n)',
+            average: 'O(n log n)',
+            worst: 'O(n log n)'
+        },
+        tip: 'Merge Sort divide o problema em partes menores e depois intercala os resultados. Ele e estavel e previsivel, mas usa memoria auxiliar.',
+        snippets: {
+            javascript: `// Merge Sort - JavaScript
+function mergeSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  const middle = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, middle));
+  const right = mergeSort(arr.slice(middle));
+
+  return merge(left, right);
+}
+
+function merge(left, right) {
+  const merged = [];
+  let i = 0;
+  let j = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      merged.push(left[i++]);
+    } else {
+      merged.push(right[j++]);
+    }
+  }
+
+  return [...merged, ...left.slice(i), ...right.slice(j)];
+}`,
+            python: `# Merge Sort - Python
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr[:]
+
+    middle = len(arr) // 2
+    left = merge_sort(arr[:middle])
+    right = merge_sort(arr[middle:])
+
+    merged = []
+    i = 0
+    j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            merged.append(left[i])
+            i += 1
+        else:
+            merged.append(right[j])
+            j += 1
+
+    return merged + left[i:] + right[j:]`,
+            java: `// Merge Sort - Java
+static int[] mergeSort(int[] arr) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+
+    int middle = arr.length / 2;
+    int[] left = Arrays.copyOfRange(arr, 0, middle);
+    int[] right = Arrays.copyOfRange(arr, middle, arr.length);
+
+    return merge(mergeSort(left), mergeSort(right));
+}
+
+static int[] merge(int[] left, int[] right) {
+    int[] merged = new int[left.length + right.length];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            merged[k++] = left[i++];
+        } else {
+            merged[k++] = right[j++];
+        }
+    }
+
+    while (i < left.length) {
+        merged[k++] = left[i++];
+    }
+
+    while (j < right.length) {
+        merged[k++] = right[j++];
+    }
+
+    return merged;
+}`,
+            pseudocode: `MERGE-SORT(lista)
+  se tamanho(lista) <= 1
+    retornar lista
+
+  meio = tamanho(lista) / 2
+  esquerda = MERGE-SORT(lista[0..meio-1])
+  direita = MERGE-SORT(lista[meio..fim])
+
+  retornar INTERCALAR(esquerda, direita)
+
+INTERCALAR(esquerda, direita)
+  resultado = lista vazia
+
+  enquanto esquerda e direita tiverem itens
+    se esquerda[0] <= direita[0]
+      mover esquerda[0] para resultado
+    senao
+      mover direita[0] para resultado
+
+  anexar itens restantes ao resultado
+  retornar resultado`
+        }
+    },
+    quick: {
+        label: 'Quick Sort',
+        complexity: {
+            best: 'O(n log n)',
+            average: 'O(n log n)',
+            worst: 'O(n^2)'
+        },
+        tip: 'Quick Sort costuma ser muito rapido na pratica. Ele particiona o array em torno de um pivo e funciona melhor quando a escolha do pivo evita particoes desequilibradas.',
+        snippets: {
+            javascript: `// Quick Sort - JavaScript
+function quickSort(arr) {
+  const list = [...arr];
+
+  function sort(low, high) {
+    if (low >= high) {
+      return;
+    }
+
+    const pivotIndex = partition(low, high);
+    sort(low, pivotIndex - 1);
+    sort(pivotIndex + 1, high);
+  }
+
+  function partition(low, high) {
+    const pivot = list[high];
+    let i = low;
+
+    for (let j = low; j < high; j++) {
+      if (list[j] < pivot) {
+        [list[i], list[j]] = [list[j], list[i]];
+        i++;
+      }
+    }
+
+    [list[i], list[high]] = [list[high], list[i]];
+    return i;
+  }
+
+  sort(0, list.length - 1);
+  return list;
+}`,
+            python: `# Quick Sort - Python
+def quick_sort(arr):
+    values = arr[:]
+
+    def sort(low, high):
+        if low >= high:
+            return
+
+        pivot_index = partition(low, high)
+        sort(low, pivot_index - 1)
+        sort(pivot_index + 1, high)
+
+    def partition(low, high):
+        pivot = values[high]
+        i = low
+
+        for j in range(low, high):
+            if values[j] < pivot:
+                values[i], values[j] = values[j], values[i]
+                i += 1
+
+        values[i], values[high] = values[high], values[i]
+        return i
+
+    sort(0, len(values) - 1)
+    return values`,
+            java: `// Quick Sort - Java
+static void quickSort(int[] arr, int low, int high) {
+    if (low >= high) {
+        return;
+    }
+
+    int pivotIndex = partition(arr, low, high);
+    quickSort(arr, low, pivotIndex - 1);
+    quickSort(arr, pivotIndex + 1, high);
+}
+
+static int partition(int[] arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+        }
+    }
+
+    int temp = arr[i];
+    arr[i] = arr[high];
+    arr[high] = temp;
+    return i;
+}`,
+            pseudocode: `QUICK-SORT(lista, inicio, fim)
+  se inicio >= fim
+    retornar
+
+  pivo = PARTICIONAR(lista, inicio, fim)
+  QUICK-SORT(lista, inicio, pivo - 1)
+  QUICK-SORT(lista, pivo + 1, fim)
+
+PARTICIONAR(lista, inicio, fim)
+  pivo = lista[fim]
+  i = inicio
+
+  para j de inicio ate fim - 1
+    se lista[j] < pivo
+      trocar lista[i] com lista[j]
+      i = i + 1
+
+  trocar lista[i] com lista[fim]
+  retornar i`
         }
     },
     selection: {
@@ -168,6 +425,19 @@ static void selectionSort(int[] arr) {
         }
     }
 }`
+            ,
+            pseudocode: `SELECTION-SORT(lista)
+  para i de 0 ate tamanho(lista) - 2
+    menor = i
+
+    para j de i + 1 ate tamanho(lista) - 1
+      se lista[j] < lista[menor]
+        menor = j
+
+    se menor != i
+      trocar lista[i] com lista[menor]
+
+  retornar lista`
         }
     }
 };
@@ -360,6 +630,13 @@ async function startSorting() {
             [STATE.values[leftIndex], STATE.values[rightIndex]] = [STATE.values[rightIndex], STATE.values[leftIndex]];
             updateCounterViews();
             paintBars({ swapping: [leftIndex, rightIndex] });
+        }
+
+        if (step.type === 'overwrite') {
+            STATE.swaps += 1;
+            STATE.values[leftIndex] = step.value;
+            updateCounterViews();
+            paintBars({ swapping: [leftIndex] });
         }
 
         await sleep(getStepDelay());
