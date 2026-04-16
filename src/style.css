@@ -440,6 +440,14 @@ input[type="range"] {
         padding-top: 18px;
     }
 
+    .left-column,
+    .visualizer-panel,
+    .visualizer-container,
+    .code-panel,
+    .snippet-shell {
+        min-width: 0;
+    }
+
     .brand-line {
         gap: 8px;
     }
@@ -467,7 +475,8 @@ input[type="range"] {
     }
 
     .bar {
-        min-width: 12px;
+        min-width: 0;
+        flex: 1 1 0;
         font-size: 0.72rem;
         padding-top: 8px;
     }
@@ -489,6 +498,7 @@ input[type="range"] {
 
     .control-btn,
     .tab-btn {
+        min-width: 0;
         width: 100%;
     }
 
