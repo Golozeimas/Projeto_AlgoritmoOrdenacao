@@ -1,3 +1,5 @@
+import { createCompareStep, createOverwriteStep } from './stepFactory.js';
+
 export function mergeSort(arr) {
     const steps = [];
     const tempArr = [...arr];
@@ -11,26 +13,38 @@ export function mergeSort(arr) {
         let targetIndex = left;
 
         while (leftIndex < leftSlice.length && rightIndex < rightSlice.length) {
-            steps.push({
-                type: 'compare',
-                indices: [left + leftIndex, middle + 1 + rightIndex]
-            });
+            steps.push(createCompareStep(
+                [left + leftIndex, middle + 1 + rightIndex],
+                `Comparando os primeiros valores disponíveis das duas metades para decidir qual entra primeiro na intercalação.`,
+                {
+                    phaseLabel: 'Intercalação',
+                    iterationLabel: `Faixa ${left}-${right}`
+                }
+            ));
 
             if (leftSlice[leftIndex] <= rightSlice[rightIndex]) {
                 tempArr[targetIndex] = leftSlice[leftIndex];
-                steps.push({
-                    type: 'overwrite',
-                    indices: [targetIndex],
-                    value: leftSlice[leftIndex]
-                });
+                steps.push(createOverwriteStep(
+                    targetIndex,
+                    leftSlice[leftIndex],
+                    `O valor ${leftSlice[leftIndex]} entra na próxima posição ordenada porque é o menor disponível agora.`,
+                    {
+                        phaseLabel: 'Escrita',
+                        iterationLabel: `Faixa ${left}-${right}`
+                    }
+                ));
                 leftIndex += 1;
             } else {
                 tempArr[targetIndex] = rightSlice[rightIndex];
-                steps.push({
-                    type: 'overwrite',
-                    indices: [targetIndex],
-                    value: rightSlice[rightIndex]
-                });
+                steps.push(createOverwriteStep(
+                    targetIndex,
+                    rightSlice[rightIndex],
+                    `O valor ${rightSlice[rightIndex]} entra primeiro porque é menor que o próximo valor da metade esquerda.`,
+                    {
+                        phaseLabel: 'Escrita',
+                        iterationLabel: `Faixa ${left}-${right}`
+                    }
+                ));
                 rightIndex += 1;
             }
 
@@ -39,22 +53,30 @@ export function mergeSort(arr) {
 
         while (leftIndex < leftSlice.length) {
             tempArr[targetIndex] = leftSlice[leftIndex];
-            steps.push({
-                type: 'overwrite',
-                indices: [targetIndex],
-                value: leftSlice[leftIndex]
-            });
+            steps.push(createOverwriteStep(
+                targetIndex,
+                leftSlice[leftIndex],
+                `Restou ${leftSlice[leftIndex]} na metade esquerda, então ele é copiado para manter a ordem da faixa.`,
+                {
+                    phaseLabel: 'Cópia restante',
+                    iterationLabel: `Faixa ${left}-${right}`
+                }
+            ));
             leftIndex += 1;
             targetIndex += 1;
         }
 
         while (rightIndex < rightSlice.length) {
             tempArr[targetIndex] = rightSlice[rightIndex];
-            steps.push({
-                type: 'overwrite',
-                indices: [targetIndex],
-                value: rightSlice[rightIndex]
-            });
+            steps.push(createOverwriteStep(
+                targetIndex,
+                rightSlice[rightIndex],
+                `Restou ${rightSlice[rightIndex]} na metade direita, então ele é copiado para completar a intercalação.`,
+                {
+                    phaseLabel: 'Cópia restante',
+                    iterationLabel: `Faixa ${left}-${right}`
+                }
+            ));
             rightIndex += 1;
             targetIndex += 1;
         }

@@ -1,3 +1,5 @@
+import { createCompareStep, createSwapStep } from './stepFactory.js';
+
 export function quickSort(arr) {
     const steps = [];
     const tempArr = [...arr];
@@ -7,11 +9,25 @@ export function quickSort(arr) {
         let pivotIndex = low;
 
         for (let j = low; j < high; j++) {
-            steps.push({ type: 'compare', indices: [j, high] });
+            steps.push(createCompareStep(
+                [j, high],
+                `Comparando ${tempArr[j]} com o pivô ${pivot} para decidir se ele deve ficar antes do pivô.`,
+                {
+                    phaseLabel: 'Partição',
+                    iterationLabel: `Faixa ${low}-${high}`
+                }
+            ));
 
             if (tempArr[j] < pivot) {
                 if (pivotIndex !== j) {
-                    steps.push({ type: 'swap', indices: [pivotIndex, j] });
+                    steps.push(createSwapStep(
+                        [pivotIndex, j],
+                        `Como ${tempArr[j]} é menor que o pivô ${pivot}, ele vai para a região da esquerda da partição.`,
+                        {
+                            phaseLabel: 'Reposicionamento',
+                            iterationLabel: `Faixa ${low}-${high}`
+                        }
+                    ));
                     [tempArr[pivotIndex], tempArr[j]] = [tempArr[j], tempArr[pivotIndex]];
                 }
 
@@ -20,7 +36,14 @@ export function quickSort(arr) {
         }
 
         if (pivotIndex !== high) {
-            steps.push({ type: 'swap', indices: [pivotIndex, high] });
+            steps.push(createSwapStep(
+                [pivotIndex, high],
+                `O pivô ${pivot} vai para sua posição final nesta partição, separando menores e maiores.`,
+                {
+                    phaseLabel: 'Posicionando pivô',
+                    iterationLabel: `Faixa ${low}-${high}`
+                }
+            ));
             [tempArr[pivotIndex], tempArr[high]] = [tempArr[high], tempArr[pivotIndex]];
         }
 

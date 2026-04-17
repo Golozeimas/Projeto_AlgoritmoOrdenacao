@@ -42,6 +42,7 @@
                 <section class="panel controls-panel">
                     <div class="actions-row">
                         <button id="start-btn" class="control-btn primary" type="button">Iniciar</button>
+                        <button id="pause-btn" class="control-btn" type="button" disabled>Pausar</button>
                         <button id="reset-btn" class="control-btn" type="button">Reiniciar</button>
                         <button id="random-btn" class="control-btn" type="button">Aleatorio</button>
                     </div>
@@ -59,6 +60,33 @@
                             <output id="size-value" for="size-range">12</output>
                         </div>
                     </div>
+                </section>
+
+                <section class="panel learning-panel" aria-live="polite">
+                    <div class="learning-header">
+                        <div>
+                            <p class="learning-eyebrow">Learning Mode - Understand</p>
+                            <strong id="learning-status" class="learning-status">Modo desativado</strong>
+                        </div>
+
+                        <button
+                            id="learning-toggle"
+                            class="control-btn learning-toggle"
+                            type="button"
+                            aria-pressed="false"
+                        >
+                            Ativar explicação
+                        </button>
+                    </div>
+
+                    <div class="learning-tags" aria-label="Contexto do passo atual">
+                        <span id="learning-phase" class="learning-tag">Visão geral</span>
+                        <span id="learning-iteration" class="learning-tag">Modo padrão</span>
+                    </div>
+
+                    <p id="learning-copy" class="learning-copy">
+                        Ative o modo de aprendizado para acompanhar a lógica do algoritmo junto com a animação.
+                    </p>
                 </section>
 
                 <section class="stats-grid">

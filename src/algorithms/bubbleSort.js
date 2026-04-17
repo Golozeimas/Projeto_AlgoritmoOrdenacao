@@ -1,17 +1,30 @@
+import { createCompareStep, createSwapStep } from './stepFactory.js';
+
 export function bubbleSort(arr) {
     const steps = [];
     const tempArr = [...arr];
 
     for (let i = 0; i < tempArr.length; i++) {
         for (let j = 0; j < tempArr.length - i - 1; j++) {
-            // Document the comparison
-            steps.push({ type: "compare", indices: [j, j + 1] });
+            steps.push(createCompareStep(
+                [j, j + 1],
+                `Comparando ${tempArr[j]} e ${tempArr[j + 1]} para levar o maior valor desta passada para a direita.`,
+                {
+                    phaseLabel: 'Comparação',
+                    iterationLabel: `Passada ${i + 1}`
+                }
+            ));
             
             if (tempArr[j] > tempArr[j + 1]) {
-                // Document the swap
-                steps.push({ type: "swap", indices: [j, j + 1] });
+                steps.push(createSwapStep(
+                    [j, j + 1],
+                    `Como ${tempArr[j]} é maior que ${tempArr[j + 1]}, os dois trocam de posição.`,
+                    {
+                        phaseLabel: 'Troca',
+                        iterationLabel: `Passada ${i + 1}`
+                    }
+                ));
                 
-                // Perform the actual swap in memory
                 const temp = tempArr[j];
                 tempArr[j] = tempArr[j + 1];
                 tempArr[j + 1] = temp;

@@ -9,6 +9,7 @@ const ALGORITHM_META = {
             worst: 'O(n^2)'
         },
         tip: 'Bubble Sort é didático, mas ineficiente para listas grandes. Use para demonstrações, introdução a comparações e casos quase ordenados.',
+        understand: 'Bubble Sort percorre a lista várias vezes e troca vizinhos fora de ordem até que os maiores valores parem no fim.',
         snippets: {
             javascript: `// Bubble Sort - JavaScript
 function bubbleSort(arr) {
@@ -64,6 +65,7 @@ static void bubbleSort(int[] arr) {
             worst: 'O(n^2)'
         },
         tip: 'Cocktail Sort percorre a lista nos dois sentidos, empurrando os maiores para o fim e os menores para o início a cada ciclo.',
+        understand: 'Cocktail Sort faz uma ida e uma volta na lista, movendo os maiores para a direita e os menores para a esquerda em cada ciclo.',
         snippets: {
             javascript: `// Cocktail Sort - JavaScript
 function cocktailSort(arr) {
@@ -204,6 +206,7 @@ static void cocktailSort(int[] arr) {
             worst: 'O(n^2)'
         },
         tip: 'Insertion Sort funciona muito bem em coleções pequenas ou parcialmente ordenadas. Ele é simples, estável e útil como bloco de apoio em algoritmos híbridos.',
+        understand: 'Insertion Sort mantém uma parte inicial ordenada e insere cada novo elemento no lugar correto dentro dessa parte.',
         snippets: {
             javascript: `// Insertion Sort - JavaScript
 function insertionSort(arr) {
@@ -275,6 +278,7 @@ static void insertionSort(int[] arr) {
             worst: 'O(n log n)'
         },
         tip: 'Merge Sort divide o problema em partes menores e depois intercala os resultados. Ele é estável e previsível, mas usa memória auxiliar.',
+        understand: 'Merge Sort divide a lista em partes menores, ordena cada parte e depois intercala tudo em ordem.',
         snippets: {
             javascript: `// Merge Sort - JavaScript
 function mergeSort(arr) {
@@ -394,6 +398,7 @@ INTERCALAR(esquerda, direita)
             worst: 'O(n^2)'
         },
         tip: 'Quick Sort costuma ser muito rápido na prática. Ele particiona o array em torno de um pivô e funciona melhor quando a escolha do pivô evita partições desequilibradas.',
+        understand: 'Quick Sort escolhe um pivô, separa menores e maiores em torno dele e repete esse processo nas partes restantes.',
         snippets: {
             javascript: `// Quick Sort - JavaScript
 function quickSort(arr) {
@@ -511,6 +516,7 @@ PARTICIONAR(lista, inicio, fim)
             worst: 'O(n^2)'
         },
         tip: 'Selection Sort faz poucas trocas, mas muitas comparações. Ele ajuda a entender o conceito de selecionar o menor elemento restante a cada iteração.',
+        understand: 'Selection Sort procura o menor valor restante e o coloca na próxima posição correta da lista.',
         snippets: {
             javascript: `// Selection Sort - JavaScript
 function selectionSort(arr) {
@@ -585,6 +591,7 @@ static void selectionSort(int[] arr) {
 const DOM = {
     visualizer: document.getElementById('visualizer-container'),
     startBtn: document.getElementById('start-btn'),
+    pauseBtn: document.getElementById('pause-btn'),
     resetBtn: document.getElementById('reset-btn'),
     randomBtn: document.getElementById('random-btn'),
     speedRange: document.getElementById('speed-range'),
@@ -599,6 +606,12 @@ const DOM = {
     worstCase: document.getElementById('worst-case'),
     tip: document.getElementById('algorithm-tip'),
     codeSnippet: document.getElementById('code-snippet'),
+    learningPanel: document.querySelector('.learning-panel'),
+    learningToggle: document.getElementById('learning-toggle'),
+    learningStatus: document.getElementById('learning-status'),
+    learningPhase: document.getElementById('learning-phase'),
+    learningIteration: document.getElementById('learning-iteration'),
+    learningCopy: document.getElementById('learning-copy'),
     algorithmButtons: [...document.querySelectorAll('[data-algorithm]')],
     languageButtons: [...document.querySelectorAll('[data-language]')]
 };
@@ -613,7 +626,9 @@ const STATE = {
     barNodes: [],
     comparisons: 0,
     swaps: 0,
+    learningMode: false,
     running: false,
+    paused: false,
     runToken: 0
 };
 
@@ -649,6 +664,73 @@ function updateMetaPanel() {
 
     DOM.languageButtons.forEach((button) => {
         button.classList.toggle('is-active', button.dataset.language === STATE.languageKey);
+    });
+}
+
+function renderLearningPanel({
+    status,
+    phase,
+    iteration,
+    copy,
+    tone
+}) {
+    DOM.learningStatus.textContent = status;
+    DOM.learningPhase.textContent = phase;
+    DOM.learningIteration.textContent = iteration;
+    DOM.learningCopy.textContent = copy;
+    DOM.learningToggle.textContent = STATE.learningMode ? 'Desativar explicação' : 'Ativar explicação';
+    DOM.learningToggle.setAttribute('aria-pressed', String(STATE.learningMode));
+    DOM.learningPanel.dataset.tone = tone;
+}
+
+function updateLearningOverview() {
+    const meta = ALGORITHM_META[STATE.algorithmKey];
+
+    if (!STATE.learningMode) {
+        renderLearningPanel({
+            status: 'Modo desativado',
+            phase: 'Visão geral',
+            iteration: 'Modo padrão',
+            copy: 'Ative o modo de aprendizado para acompanhar a lógica do algoritmo junto com a animação.',
+            tone: 'idle'
+        });
+        return;
+    }
+
+    renderLearningPanel({
+        status: STATE.running ? 'Explicando em tempo real' : 'Pronto para explicar',
+        phase: 'Visão geral',
+        iteration: STATE.running ? 'Execução em andamento' : 'Antes da execução',
+        copy: meta.understand,
+        tone: 'overview'
+    });
+}
+
+function updateLearningStep(step) {
+    if (!STATE.learningMode) {
+        return;
+    }
+
+    renderLearningPanel({
+        status: 'Explicando em tempo real',
+        phase: step.phaseLabel || 'Passo atual',
+        iteration: step.iterationLabel || 'Execução',
+        copy: step.explanation || ALGORITHM_META[STATE.algorithmKey].understand,
+        tone: step.type
+    });
+}
+
+function updateLearningCompletion() {
+    if (!STATE.learningMode) {
+        return;
+    }
+
+    renderLearningPanel({
+        status: 'Execução concluída',
+        phase: 'Concluído',
+        iteration: 'Array ordenado',
+        copy: `${ALGORITHM_META[STATE.algorithmKey].understand} A animação terminou com todos os elementos organizados em ordem.`,
+        tone: 'complete'
     });
 }
 
@@ -705,6 +787,7 @@ function loadFreshArray() {
     resetStats();
     buildBars();
     paintBars();
+    updateLearningOverview();
 }
 
 function restoreBaseArray() {
@@ -712,17 +795,25 @@ function restoreBaseArray() {
     resetStats();
     buildBars();
     paintBars();
+    updateLearningOverview();
 }
 
 function updateStartButton() {
     DOM.startBtn.disabled = STATE.running;
-    DOM.startBtn.textContent = STATE.running ? 'Executando...' : 'Iniciar';
+    DOM.startBtn.textContent = STATE.running ? (STATE.paused ? 'Pausado' : 'Executando...') : 'Iniciar';
+    
+    if (DOM.pauseBtn) {
+        DOM.pauseBtn.disabled = !STATE.running;
+        DOM.pauseBtn.textContent = STATE.paused ? 'Retomar' : 'Pausar';
+    }
 }
 
 function stopCurrentRun() {
     STATE.runToken += 1;
     STATE.running = false;
+    STATE.paused = false;
     updateStartButton();
+    updateLearningOverview();
 }
 
 function sleep(ms) {
@@ -743,6 +834,7 @@ async function startSorting() {
     STATE.running = true;
     STATE.runToken += 1;
     updateStartButton();
+    updateLearningOverview();
 
     const currentToken = STATE.runToken;
     resetStats();
@@ -779,6 +871,15 @@ async function startSorting() {
             paintBars({ swapping: [leftIndex] });
         }
 
+        updateLearningStep(step);
+
+        while (STATE.paused) {
+            if (currentToken !== STATE.runToken) {
+                return;
+            }
+            await sleep(50);
+        }
+
         await sleep(getStepDelay());
     }
 
@@ -789,6 +890,7 @@ async function startSorting() {
     paintBars({ sorted: STATE.values.map((_, index) => index) });
     STATE.running = false;
     updateStartButton();
+    updateLearningCompletion();
 }
 
 function handleAlgorithmChange(nextAlgorithm) {
@@ -805,6 +907,17 @@ function handleAlgorithmChange(nextAlgorithm) {
 function handleLanguageChange(nextLanguage) {
     STATE.languageKey = nextLanguage;
     updateMetaPanel();
+}
+
+function handleLearningToggle() {
+    STATE.learningMode = !STATE.learningMode;
+
+    if (STATE.running && !STATE.learningMode) {
+        updateLearningOverview();
+        return;
+    }
+
+    updateLearningOverview();
 }
 
 function handleReset() {
@@ -829,10 +942,18 @@ function handleSpeedInput(nextSpeed) {
     updateRangeViews();
 }
 
+function handlePauseToggle() {
+    if (!STATE.running) return;
+    STATE.paused = !STATE.paused;
+    updateStartButton();
+}
+
 function bindEvents() {
     DOM.startBtn.addEventListener('click', startSorting);
+    DOM.pauseBtn.addEventListener('click', handlePauseToggle);
     DOM.resetBtn.addEventListener('click', handleReset);
     DOM.randomBtn.addEventListener('click', handleRandomize);
+    DOM.learningToggle.addEventListener('click', handleLearningToggle);
 
     DOM.speedRange.addEventListener('input', (event) => {
         handleSpeedInput(event.target.value);
@@ -858,6 +979,7 @@ function bindEvents() {
 function init() {
     updateRangeViews();
     updateMetaPanel();
+    updateLearningOverview();
     loadFreshArray();
     updateStartButton();
     bindEvents();
